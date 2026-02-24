@@ -3,7 +3,6 @@ require('dotenv').config();
 let config = require("./config.json");
 const fs = require("fs");
 
-const ADMIN_USERS = ["449557477105729536"];
 const timers = {};
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds,  GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
@@ -13,7 +12,7 @@ client.on(Events.MessageCreate, async (message) => {
   let {content, author, guildId} = message;
 
   if (content[0] !== "!") return;
-  if (ADMIN_USERS.indexOf(author.id) === -1) return;
+  if (config[guildId]?.targetUsers && config[guildId]?.targetUsers.indexOf(author.id) !== -1) return;
 
   content = content.split(" ");
 
